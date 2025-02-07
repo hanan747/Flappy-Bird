@@ -16,10 +16,6 @@
             height: 100vh;
             background-color: skyblue;
         }
-        #logo {
-            width: 150px;
-            margin-bottom: 10px;
-        }
         canvas {
             background-color: transparent;
             display: block;
@@ -55,7 +51,7 @@
 
         // Load images
         const backgroundImg = new Image();
-        backgroundImg.src = "baground.jpg";
+        backgroundImg.src = "background.jpg"; // Ensure correct spelling
         const birdImg = new Image();
         birdImg.src = "bird.png";
         const pipeImg = new Image();
@@ -170,7 +166,7 @@
 
         function handleGameTap() {
             if (!gameStarted) {
-                gameStarted = true; // Start the game on the first tap
+                gameStarted = true; // Start the game on first tap
                 return;
             }
             if (gameOver) {
@@ -180,20 +176,12 @@
             bird.velocity = JUMP_STRENGTH; // Make bird jump
         }
 
-        document.addEventListener("keydown", (event) => {
-            if (event.key === "Enter" && !gameStarted) {
-                gameStarted = true;
-            }
-            if (event.key === "r" && gameOver) {
-                resetGame();
-            }
-            if (gameStarted && !gameOver && (event.key === " " || event.key === "ArrowUp")) {
-                bird.velocity = JUMP_STRENGTH;
-            }
-        });
-
+        // Support both mouse clicks and mobile touch
         document.addEventListener("mousedown", handleGameTap);
-        document.addEventListener("touchstart", handleGameTap); // Support for Android touch
+        document.addEventListener("touchstart", (event) => {
+            event.preventDefault(); // Prevents double tap zoom on mobile
+            handleGameTap();
+        });
 
         resetGame();
         gameLoop();
